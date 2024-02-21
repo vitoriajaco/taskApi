@@ -1,0 +1,42 @@
+package com.example.apigenerator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@Controller
+public class AtividadeController {
+
+    @Autowired
+    AtividadeService atividadeService;
+
+    @GetMapping(path = "/listarAtividades")
+    public List<Atividade> mostrarTodasAtividades(){
+        return atividadeService.mostrarTodasAtividades();
+
+    }
+    @GetMapping(path = "/buscarPorId/{id}")
+    public Optional<Atividade> buscarAtividadePorId(@PathVariable Long id){
+        return atividadeService.buscarAtividadePorId(id);
+
+    }
+
+    @PostMapping(path= "/cadastrarAtividade")
+    public Atividade cadastrarAtividade (@RequestBody Atividade atividade){
+        return atividadeService.cadastrarAtividade(atividade);
+    }
+
+    @PutMapping(path="/alterarAtividade/{id}")
+    public Atividade alterarAtividade (@RequestBody Atividade atividade){
+        return atividadeService.alterarAtividade(atividade);
+    }
+
+    @DeleteMapping(path = "/DeletarAtividade/{id}")
+    public void deletarAtividade (@PathVariable Long id){
+        atividadeService.deletarAtividade(id);
+    }
+}
+
