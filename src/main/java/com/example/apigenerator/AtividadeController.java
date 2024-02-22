@@ -20,6 +20,13 @@ public class AtividadeController {
         return atividadeService.mostrarTodasAtividades();
 
     }
+
+  /*  @GetMapping(path = "/listarAtividade/{status}")
+    public List<Atividade> mostrarAtividadePorStatus(@PathVariable Status status){
+        return atividadeService.mostrarPorStatus(status);
+
+    }*/
+
     @GetMapping(path = "/buscarPorId/{id}")
     public Optional<Atividade> buscarAtividadePorId(@PathVariable Long id){
         return atividadeService.buscarAtividadePorId(id);
@@ -33,9 +40,10 @@ public class AtividadeController {
     }
 
     @PutMapping(path="/alterarAtividade/{id}")
-    public Atividade alterarAtividade (@RequestBody Atividade atividade){
-        return atividadeService.alterarAtividade(atividade);
+    public Atividade alterarAtividade (@PathVariable Long id, @RequestBody Atividade atividade){
+        return atividadeService.alterarAtividade(atividade, id);
     }
+
 
     @DeleteMapping(path = "/DeletarAtividade/{id}")
     public void deletarAtividade (@PathVariable Long id){
