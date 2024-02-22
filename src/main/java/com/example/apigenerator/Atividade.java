@@ -15,7 +15,7 @@ public class Atividade {
 
     private String tarefa;
     @Column(name = "status")
-    private Status status;
+    private Status status = Status.EM_ABERTO;
 
     public Long getId() {
         return id;
