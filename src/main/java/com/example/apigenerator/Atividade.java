@@ -1,6 +1,6 @@
 package com.example.apigenerator;
 
-import jakarta.annotation.Nullable;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,7 +11,8 @@ public class Atividade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "tarefa", nullable = false)
+    @Column(name = "tarefa", nullable = false, unique = true)
+
     private String tarefa;
     @Column(name = "status")
     private Status status;
