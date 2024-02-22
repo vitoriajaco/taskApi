@@ -3,6 +3,7 @@ package com.example.apigenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class AtividadeController {
     AtividadeService atividadeService;
 
     @GetMapping(path = "/listarAtividades")
-    public List<Atividade> mostrarTodasAtividades(){
-        return atividadeService.mostrarTodasAtividades();
+    public ResponseEntity<List<Atividade>> mostrarTodasAtividades(){
+        return ResponseEntity.ok(atividadeService.mostrarTodasAtividades());
 
     }
 
@@ -28,26 +29,28 @@ public class AtividadeController {
     }*/
 
     @GetMapping(path = "/buscarPorId/{id}")
-    public Optional<Atividade> buscarAtividadePorId(@PathVariable Long id){
-        return atividadeService.buscarAtividadePorId(id);
+    public ResponseEntity<Optional<Atividade>> buscarAtividadePorId(@PathVariable Long id){
+        return ResponseEntity.ok(atividadeService.buscarAtividadePorId(id));
 
     }
 
     @PostMapping(path= "/cadastrarAtividade")
     @ResponseStatus(HttpStatus.CREATED)
-    public Atividade cadastrarAtividade (@RequestBody Atividade atividade){
-        return atividadeService.cadastrarAtividade(atividade);
+    public ResponseEntity<Atividade> cadastrarAtividade (@RequestBody Atividade atividade){
+        return ResponseEntity.ok(atividadeService.cadastrarAtividade(atividade));
     }
 
     @PutMapping(path="/alterarAtividade/{id}")
-    public Atividade alterarAtividade (@PathVariable Long id, @RequestBody Atividade atividade){
-        return atividadeService.alterarAtividade(atividade, id);
+    public ResponseEntity<Atividade> alterarAtividade (@PathVariable Long id, @RequestBody Atividade atividade){
+        Atividade result =  atividadeService.alterarAtividade(atividade, id);
+        return ResponseEntity.ok(result);
     }
 
 
     @DeleteMapping(path = "/DeletarAtividade/{id}")
-    public void deletarAtividade (@PathVariable Long id){
+    public ResponseEntity<Boolean> deletarAtividade (@PathVariable Long id){
         atividadeService.deletarAtividade(id);
+        return ResponseEntity.ok(true);
     }
 }
 

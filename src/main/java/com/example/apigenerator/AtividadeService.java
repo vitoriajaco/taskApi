@@ -1,6 +1,7 @@
 package com.example.apigenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -38,10 +39,22 @@ public class AtividadeService {
         if (!(atividade.getId() == id)) {
             throw new AtividadeSameIdException("ID de atividades não são iguais");
         }
-       validadeSeAtividadeExiste(id);
-      return atividadeRepository.save(atividade);
+        validadeSeAtividadeExiste(id);
+        return atividadeRepository.save(atividade);
 
     }
+
+    public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
+        return atividadeRepository.findById(id)
+                .map(atividadeToUpdate -> {
+                    atividadeToUpdate.setTarefa(atividade.getTarefa());
+                    atividadeToUpdate.setStatus(atividade.getStatus());
+                    Atividade updated = atividadeRepository.save(atividadeToUpdate);
+                    return ResponseEntity.ok().body(updated);
+                }).orElseThrow(); //.orElseThrow(ResponseEntity.notFound().build()); -> Verificar pq nao aceitou
+    }
+
+
 
     //PARTE ANTIGA
 /*    public Atividade alterarAtividade(Atividade atividade, Long id){
