@@ -1,6 +1,7 @@
 package com.example.apigenerator.model;
 
 
+import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,6 +19,9 @@ public class Atividade {
 
     @Column(name = "status")
     private Status status = Status.EM_ABERTO;
+
+    @Column(name = "categoria")
+    private Categoria categoria = Categoria.SEM_CATEGORIA;
 
     public Long getId() {
         return id;
