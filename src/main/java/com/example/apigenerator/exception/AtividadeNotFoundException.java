@@ -1,4 +1,4 @@
-package com.example.apigenerator;
+package com.example.apigenerator.exception;
 
 public class AtividadeNotFoundException extends RuntimeException {
 

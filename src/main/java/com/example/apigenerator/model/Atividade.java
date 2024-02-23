@@ -1,6 +1,7 @@
-package com.example.apigenerator;
+package com.example.apigenerator.model;
 
 
+import com.example.apigenerator.Enum.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 

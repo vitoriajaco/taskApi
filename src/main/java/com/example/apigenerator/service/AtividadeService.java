@@ -1,10 +1,13 @@
-package com.example.apigenerator;
+package com.example.apigenerator.service;
 
+import com.example.apigenerator.exception.AtividadeNotFoundException;
+import com.example.apigenerator.exception.AtividadeSameIdException;
+import com.example.apigenerator.model.Atividade;
+import com.example.apigenerator.repository.AtividadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

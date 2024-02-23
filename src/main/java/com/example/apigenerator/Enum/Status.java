@@ -1,4 +1,4 @@
-package com.example.apigenerator;
+package com.example.apigenerator.Enum;
 
 public enum Status {
     CONCLUIDA,
