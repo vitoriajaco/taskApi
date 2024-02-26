@@ -47,6 +47,12 @@ public class AtividadeController {
         return ResponseEntity.ok(result);
     }
 
+    @PutMapping(path = "/updateAtividade/{id}")
+    public ResponseEntity<Atividade> updateTask(@PathVariable Long id, @RequestBody Atividade atividade){
+        Atividade resultado = atividadeService.update(atividade, id).getBody();
+        return ResponseEntity.ok(resultado);
+    }
+
     @DeleteMapping(path = "/DeletarAtividade/{id}")
     public ResponseEntity<Boolean> deletarAtividade(@PathVariable Long id) {
         atividadeService.deletarAtividade(id);

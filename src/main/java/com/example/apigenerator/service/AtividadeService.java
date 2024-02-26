@@ -1,12 +1,15 @@
 package com.example.apigenerator.service;
 
+import com.example.apigenerator.Enum.Status;
 import com.example.apigenerator.exception.AtividadeNotFoundException;
 import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +57,7 @@ public class AtividadeService {
                     atividadeToUpdate.setStatus(atividade.getStatus());
                     Atividade updated = atividadeRepository.save(atividadeToUpdate);
                     return ResponseEntity.ok().body(updated);
-                }).orElseThrow(); //.orElseThrow(ResponseEntity.notFound().build()); -> Verificar pq nao aceitou
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!")); //.orElseThrow(ResponseEntity.notFound().build()); -> Verificar pq nao aceitou
     }
 
 
@@ -75,5 +78,9 @@ public class AtividadeService {
         return isPresent.orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada!"));
 
         }
+
+  /*  private Atividade findByStatus (Status status){
+
+    }*/
 
 }
