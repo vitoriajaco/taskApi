@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 
 class AtividadeServiceTest {
 
@@ -93,6 +92,14 @@ class AtividadeServiceTest {
 
     @Test
     void cadastrarAtividade() {
+
+        Mockito.when(atividadeRepository.save(any())).thenReturn(atividade);
+
+        Atividade result = atividadeService.cadastrarAtividade(atividade);
+
+        Assertions.assertEquals(result, atividade);
+        Assertions.assertNotNull(result);
+
     }
 
     @Test
