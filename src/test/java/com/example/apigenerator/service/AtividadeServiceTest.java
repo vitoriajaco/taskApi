@@ -59,7 +59,7 @@ class AtividadeServiceTest {
     }
 
     @Test
-    void mostrarTodasAtividades() {
+    void deveMostrarTodasAtividades() {
         List<Atividade>listaDeAtividades = new ArrayList<>();
         Atividade atividade2 = new Atividade(2L, "Correr uma maratona", Status.EM_ABERTO, Categoria.PESSOAL);
         Atividade atividade3 = new Atividade(3L, "Comprar batata doce", Status.CONCLUIDA, Categoria.MERCADO);
@@ -72,12 +72,11 @@ class AtividadeServiceTest {
         List<Atividade> result = atividadeService.mostrarTodasAtividades();
 
         Assertions.assertEquals(result, listaDeAtividades);
-        System.out.println(result);
-        System.out.println(listaDeAtividades);
+
     }
 
     @Test
-    void buscarAtividadePorId() {
+    void deveBuscarAtividadePorId() {
 
         Long atividadeIdMock = 1L;
         Mockito.when(atividadeRepository.findById(anyLong())).thenReturn(Optional.of(atividade));
@@ -85,13 +84,12 @@ class AtividadeServiceTest {
         Optional<Atividade> result = atividadeService.buscarAtividadePorId(atividadeIdMock);
 
        Assertions.assertEquals(result.get(), atividade);
-        System.out.println(result.get());
-        System.out.println(atividade);
+
 
     }
 
     @Test
-    void cadastrarAtividade() {
+    void deveCadastrarAtividade() {
 
         Mockito.when(atividadeRepository.save(any())).thenReturn(atividade);
 
@@ -111,7 +109,7 @@ class AtividadeServiceTest {
     }
 
     @Test
-    void deletarAtividade() {
+    void deveDeletarAtividade() {
         atividadeService.deletarAtividade(1L);
 
         Mockito.verify(atividadeRepository, Mockito.times(1)).deleteById(atividade.getId());
