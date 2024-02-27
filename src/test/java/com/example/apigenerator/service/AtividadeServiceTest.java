@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class AtividadeServiceTest {
 
@@ -47,6 +48,8 @@ class AtividadeServiceTest {
     public static final Status status = Status.EXECUTANDO;
 
     public static final Categoria categoria = Categoria.TRABALHO;
+
+    public static final String atividadeNaoEncontradaError = "Atividade não encontrada!";
 
 
     private void iniciarAtividade(){
@@ -75,6 +78,7 @@ class AtividadeServiceTest {
         List<Atividade> result = atividadeService.mostrarTodasAtividades();
 
         Assertions.assertEquals(result, listaDeAtividades);
+        Assertions.assertNotNull(result);
 
     }
 
@@ -118,6 +122,7 @@ class AtividadeServiceTest {
         Atividade result = atividadeService.alterarAtividade(atividade, 1L);
 
        Assertions.assertEquals(atividade, result);
+       Assertions.assertNotNull(result);
 
     }
 
@@ -134,6 +139,6 @@ class AtividadeServiceTest {
 
     @Test
     void validaSeAtividadeExiste(){
-
+      //  when(atividadeRepository.findById(anyLong())).thenReturn(new AtividadeNotFoundException());
     }
 }
