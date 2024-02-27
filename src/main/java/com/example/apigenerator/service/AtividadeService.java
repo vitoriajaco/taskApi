@@ -25,10 +25,6 @@ public class AtividadeService {
         return atividadeRepository.findAll();
     }
 
-    /*  public List<Atividade> mostrarPorStatus(Status status){
-         var x = atividadeRepository.findBy(Status.CONCLUIDA);
-          return mostrarPorStatus(status);
-      }*/
     public Optional<Atividade> buscarAtividadePorId(Long id) {
         return atividadeRepository.findById(id);
     }
@@ -73,14 +69,11 @@ public class AtividadeService {
         atividadeRepository.deleteById(id);
     }
 
-    private Atividade validadeSeAtividadeExiste(Long id){
+    public Atividade validadeSeAtividadeExiste(Long id){
         Optional <Atividade> isPresent = atividadeRepository.findById(id);
         return isPresent.orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada!"));
 
         }
 
-  /*  private Atividade findByStatus (Status status){
-
-    }*/
 
 }

@@ -2,6 +2,7 @@ package com.example.apigenerator.service;
 
 import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
+import com.example.apigenerator.exception.AtividadeNotFoundException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
 import com.example.apigenerator.repository.AtividadeRepositoryTest;
@@ -9,6 +10,7 @@ import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 
 class AtividadeServiceTest {
 
@@ -102,6 +105,20 @@ class AtividadeServiceTest {
 
     @Test
     void alterarAtividade() {
+
+
+        atividade.getId();
+        atividade.setTarefa("Estudar NodeJS");
+        atividade.setStatus(Status.CONCLUIDA);
+        atividade.setCategoria(Categoria.URGENTE);
+
+        Mockito.when(atividadeRepository.findById(anyLong())).thenReturn(Optional.of(atividade));
+        Mockito.when(atividadeRepository.save(atividade)).thenReturn(atividade);
+
+        Atividade result = atividadeService.alterarAtividade(atividade, 1L);
+
+       Assertions.assertEquals(atividade, result);
+
     }
 
     @Test
@@ -113,5 +130,10 @@ class AtividadeServiceTest {
         atividadeService.deletarAtividade(1L);
 
         Mockito.verify(atividadeRepository, Mockito.times(1)).deleteById(atividade.getId());
+    }
+
+    @Test
+    void validaSeAtividadeExiste(){
+
     }
 }
