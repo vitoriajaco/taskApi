@@ -112,5 +112,8 @@ class AtividadeServiceTest {
 
     @Test
     void deletarAtividade() {
+        atividadeService.deletarAtividade(1L);
+
+        Mockito.verify(atividadeRepository, Mockito.times(1)).deleteById(atividade.getId());
     }
 }
