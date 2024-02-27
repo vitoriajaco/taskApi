@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @SpringBootTest
 class AtividadeControllerTest {
@@ -67,6 +68,13 @@ class AtividadeControllerTest {
 
     @Test
     void deletarAtividade() {
+        Mockito.doNothing().when(atividadeService).deletarAtividade(anyLong());
+
+        ResponseEntity<?> result = atividadeController.deletarAtividade(ID);
+
+        assertNotNull(result);
+        Mockito.verify(atividadeService, Mockito.times(1)).deletarAtividade(anyLong());
+        assertEquals(HttpStatus.OK, result.getStatusCode() );
     }
 
     @Test
