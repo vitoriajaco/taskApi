@@ -62,9 +62,5 @@ public class AtividadeController {
         return ResponseEntity.ok(true);
     }
 
-    public Optional<Atividade> buscarPorId(@PathVariable Long id) {
-        return atividadeRepository.findById(id);
-
-    }
 
 }

@@ -32,7 +32,6 @@ public class AtividadeService {
     public Atividade cadastrarAtividade(Atividade atividade) {
         return atividadeRepository.save(atividade);
     }
-
     //Ponto a melhorar
     public Atividade alterarAtividade(Atividade atividade, Long id) {
         if (!(atividade.getId() == id)) {
