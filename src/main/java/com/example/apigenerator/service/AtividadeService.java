@@ -48,7 +48,7 @@ public class AtividadeService {
                     atividadeToUpdate.setStatus(atividade.getStatus());
                     Atividade updated = atividadeRepository.save(atividadeToUpdate);
                     return ResponseEntity.ok().body(updated);
-                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!")); //.orElseThrow(ResponseEntity.notFound().build()); -> Verificar pq nao aceitou
+                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
     }
     public void deletarAtividade(Long id){
         atividadeRepository.deleteById(id);

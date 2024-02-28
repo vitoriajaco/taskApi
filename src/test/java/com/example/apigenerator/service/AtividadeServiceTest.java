@@ -20,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,8 @@ class AtividadeServiceTest {
     private Atividade atividade;
 
     private Optional<Atividade> atividadeOptional;
+    @Mock
+    private AtividadeNotFoundException atividadeNotFoundException;
 
     //Verificar a necessidade do uso do final e static
     public static final Long ID = 1L;
@@ -51,7 +56,7 @@ class AtividadeServiceTest {
 
     public static final Categoria categoria = Categoria.TRABALHO;
 
-    public static final String atividadeNaoEncontradaError = "Atividade não encontrada!";
+
 
 
     private void iniciarAtividade(){
@@ -148,6 +153,20 @@ class AtividadeServiceTest {
     }
 
     @Test
+    void deveRetornarExceptionTaskNaoEncontrada(){
+        Atividade atividadeVazia = new Atividade();
+
+        Mockito.when(atividadeRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            ResponseEntity result = atividadeService.update(atividadeVazia, 2L);
+            }, "Task não encontrada!");
+
+
+    }
+
+    @Test
     void deveDeletarAtividade() {
         atividadeService.deletarAtividade(1L);
 
@@ -156,6 +175,11 @@ class AtividadeServiceTest {
 
     @Test
     void validaSeAtividadeExiste(){
-      //  when(atividadeRepository.findById(anyLong())).thenReturn(new AtividadeNotFoundException());
+
+       when(atividadeRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(AtividadeNotFoundException.class, () -> {
+            Atividade result = atividadeService.validadeSeAtividadeExiste(2L);
+        }, "Atividade não encontrada!");
     }
 }
