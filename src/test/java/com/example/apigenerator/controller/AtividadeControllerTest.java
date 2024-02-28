@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -49,6 +51,11 @@ class AtividadeControllerTest {
 
     @Test
     void buscarAtividadePorId() {
+        Mockito.when(atividadeService.buscarAtividadePorId(anyLong())).thenReturn(Optional.of(atividade));
+        ResponseEntity<Atividade>result = atividadeController.alterarAtividade(ID, atividade);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getStatusCode());
+
     }
 
     @Test
