@@ -50,7 +50,7 @@ class AtividadeControllerTest {
     }
 
     @Test
-    void buscarAtividadePorId() {
+    void AobuscarAtividadePorIdDeveRetornarStatusOk() {
         Mockito.when(atividadeService.buscarAtividadePorId(anyLong())).thenReturn(Optional.of(atividade));
         ResponseEntity<Atividade>result = atividadeController.alterarAtividade(ID, atividade);
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -59,14 +59,20 @@ class AtividadeControllerTest {
     }
 
     @Test
-    void cadastrarAtividade() {
+    void AocadastrarAtividadeDeveRetornarStatusOk() {
         Mockito.when(atividadeService.cadastrarAtividade(any())).thenReturn(atividade);
         ResponseEntity<Atividade> result = atividadeController.cadastrarAtividade(atividade);
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
-    void alterarAtividade() {
+    void AoalterarAtividadeDeveRetornarStatusCodeOk() {
+        Mockito.when(atividadeService.alterarAtividade(any(), anyLong())).thenReturn(atividade);
+        ResponseEntity<Atividade> result = atividadeController.alterarAtividade(ID, atividade);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getStatusCode());
+
     }
 
     @Test
