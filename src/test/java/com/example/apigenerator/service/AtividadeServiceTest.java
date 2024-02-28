@@ -3,25 +3,19 @@ package com.example.apigenerator.service;
 import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
 import com.example.apigenerator.exception.AtividadeNotFoundException;
+import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
-import com.example.apigenerator.repository.AtividadeRepositoryTest;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.matchers.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -57,15 +51,13 @@ class AtividadeServiceTest {
     public static final Categoria categoria = Categoria.TRABALHO;
 
 
-
-
     private void iniciarAtividade(){
         atividade = new Atividade(ID,tarefa, status, categoria);
     }
 
 
     @BeforeEach
-    private void setAtividadeService(){
+    private void setUpAtividadeService(){
         MockitoAnnotations.openMocks(this);
         iniciarAtividade();
 
@@ -97,7 +89,7 @@ class AtividadeServiceTest {
 
         Optional<Atividade> result = atividadeService.buscarAtividadePorId(atividadeIdMock);
 
-       Assertions.assertEquals(result.get(), atividade);
+       Assertions.assertEquals(atividade, result.get());
 
 
     }
@@ -109,7 +101,7 @@ class AtividadeServiceTest {
 
         Atividade result = atividadeService.cadastrarAtividade(atividade);
 
-        Assertions.assertEquals(result, atividade);
+        Assertions.assertEquals(atividade, result);
         Assertions.assertNotNull(result);
 
     }
@@ -130,6 +122,17 @@ class AtividadeServiceTest {
 
        Assertions.assertEquals(atividade, result);
        Assertions.assertNotNull(result);
+
+    }
+
+    @Test
+    void deveRetornarExceptionDeIDDiferentes(){
+
+        Mockito.when(atividadeRepository.findById(anyLong())).thenReturn(Optional.of(atividade));
+
+        Assertions.assertThrows(AtividadeSameIdException.class, () -> {
+            Atividade result = atividadeService.alterarAtividade(atividade, 2L);
+        }, "ID de atividades não são iguais");
 
     }
 

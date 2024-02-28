@@ -32,7 +32,6 @@ public class AtividadeService {
     public Atividade cadastrarAtividade(Atividade atividade) {
         return atividadeRepository.save(atividade);
     }
-
     public Atividade alterarAtividade(Atividade atividade, Long id) {
         if (!(atividade.getId() == id)) {
             throw new AtividadeSameIdException("ID de atividades não são iguais");
@@ -58,6 +57,5 @@ public class AtividadeService {
         return isPresent.orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada!"));
 
         }
-
 
 }
