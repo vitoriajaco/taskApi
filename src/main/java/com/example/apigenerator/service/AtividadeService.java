@@ -1,6 +1,6 @@
 package com.example.apigenerator.service;
 
-import com.example.apigenerator.Enum.Status;
+
 import com.example.apigenerator.exception.AtividadeNotFoundException;
 import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
@@ -32,14 +32,13 @@ public class AtividadeService {
     public Atividade cadastrarAtividade(Atividade atividade) {
         return atividadeRepository.save(atividade);
     }
-    //Ponto a melhorar
+
     public Atividade alterarAtividade(Atividade atividade, Long id) {
         if (!(atividade.getId() == id)) {
             throw new AtividadeSameIdException("ID de atividades não são iguais");
         }
         validadeSeAtividadeExiste(id);
         return atividadeRepository.save(atividade);
-
     }
 
     public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
@@ -51,20 +50,9 @@ public class AtividadeService {
                     return ResponseEntity.ok().body(updated);
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!")); //.orElseThrow(ResponseEntity.notFound().build()); -> Verificar pq nao aceitou
     }
-
-
-
-    //PARTE ANTIGA
-/*    public Atividade alterarAtividade(Atividade atividade, Long id){
-        atividade.getId();
-        atividade.setTarefa(atividade.getTarefa());
-        atividade.setStatus(atividade.getStatus());
-        return atividadeRepository.save(atividade);
-    }*/
     public void deletarAtividade(Long id){
         atividadeRepository.deleteById(id);
     }
-
     public Atividade validadeSeAtividadeExiste(Long id){
         Optional <Atividade> isPresent = atividadeRepository.findById(id);
         return isPresent.orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada!"));

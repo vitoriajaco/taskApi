@@ -18,6 +18,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.internal.matchers.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +130,21 @@ class AtividadeServiceTest {
 
     @Test
     void update() {
+
+        Mockito.when(atividadeRepository.findById(anyLong())).thenReturn(Optional.of(atividade));
+        atividade.getId();
+        atividade.setTarefa("Comprar brocolis");
+        atividade.setStatus(Status.EM_ABERTO);
+        atividade.setCategoria(Categoria.MERCADO);
+
+        Mockito.when(atividadeRepository.save(atividade)).thenReturn(atividade);
+
+        ResponseEntity<Atividade> result = atividadeService.update(atividade, ID);
+
+        Assertions.assertNotNull(atividade);
+        Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+        Assertions.assertEquals(atividade, result.getBody());
+
     }
 
     @Test
