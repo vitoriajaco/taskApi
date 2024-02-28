@@ -100,6 +100,11 @@ class AtividadeControllerTest {
 
     @Test
     void buscarPorId() {
+        Mockito.when(atividadeService.buscarAtividadePorId(anyLong())).thenReturn(Optional.of(atividade));
+        ResponseEntity<Optional<Atividade>> result = atividadeController.buscarAtividadePorId(ID);
+
+        assertNotNull(result);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     public void iniciarAtividade(){
