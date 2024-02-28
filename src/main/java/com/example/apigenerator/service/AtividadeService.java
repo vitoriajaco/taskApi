@@ -30,9 +30,6 @@ public class AtividadeService {
     }
 
     public Atividade cadastrarAtividade(Atividade atividade) {
-        atividade.getId();
-        atividade.getTarefa();
-        atividade.getStatus();
         return atividadeRepository.save(atividade);
     }
 

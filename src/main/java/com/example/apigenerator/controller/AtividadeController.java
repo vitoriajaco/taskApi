@@ -42,18 +42,21 @@ public class AtividadeController {
     }
 
     @PutMapping(path = "/alterarAtividade/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) {
         Atividade result = atividadeService.alterarAtividade(atividade, id);
         return ResponseEntity.ok(result);
     }
 
     @PutMapping(path = "/updateAtividade/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> updateTask(@PathVariable Long id, @RequestBody Atividade atividade){
         Atividade resultado = atividadeService.update(atividade, id).getBody();
         return ResponseEntity.ok(resultado);
     }
 
     @DeleteMapping(path = "/DeletarAtividade/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> deletarAtividade(@PathVariable Long id) {
         atividadeService.deletarAtividade(id);
         return ResponseEntity.ok(true);

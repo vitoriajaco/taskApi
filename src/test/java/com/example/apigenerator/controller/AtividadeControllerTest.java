@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +36,6 @@ class AtividadeControllerTest {
 
     @InjectMocks
     private AtividadeController atividadeController;
-
     @Mock
     private AtividadeService atividadeService;
 
@@ -46,15 +46,23 @@ class AtividadeControllerTest {
     }
 
     @Test
-    void mostrarTodasAtividades() {
+    void DeveMostrarStatus200AoListarTodasAtividades() {
+        Mockito.when(atividadeService.mostrarTodasAtividades()).thenReturn(List.of(atividade));
+        ResponseEntity<List<Atividade>> result = atividadeController.mostrarTodasAtividades();
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result);
+
     }
 
     @Test
     void AobuscarAtividadePorIdDeveRetornarStatusOk() {
         Mockito.when(atividadeService.buscarAtividadePorId(anyLong())).thenReturn(Optional.of(atividade));
         ResponseEntity<Atividade>result = atividadeController.alterarAtividade(ID, atividade);
+
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getStatusCode());
+        assertNotNull(result);
 
     }
 
