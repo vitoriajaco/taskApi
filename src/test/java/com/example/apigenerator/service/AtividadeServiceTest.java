@@ -37,7 +37,6 @@ class AtividadeServiceTest {
 
     private Atividade atividade;
 
-    private Optional<Atividade> atividadeOptional;
     @Mock
     private AtividadeNotFoundException atividadeNotFoundException;
 
@@ -107,7 +106,7 @@ class AtividadeServiceTest {
     }
 
     @Test
-    void alterarAtividade() {
+    void deveAlterarAtividade() {
 
 
         atividade.getId();
