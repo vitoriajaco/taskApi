@@ -35,4 +35,22 @@ public class AtividadeRepositoryIntegrationTest {
         Assertions.assertEquals(atividade.getId(), verificaRetornoDaAtividade.getId());
 
     }
+    @Test
+    public void deveCadastrarAtividadeSemStatusECategoriaERetornarValoresDefault(){
+
+        Atividade atividade = new Atividade();
+        atividade.setTarefa("Estudar Spring Boot");
+
+        Atividade salvarAtividade = atividadeRepository.save(atividade);
+
+        Atividade verificaRetornoDaAtividade = atividadeRepository.findById(salvarAtividade.getId()).orElse(null);
+
+        Assertions.assertNotNull(verificaRetornoDaAtividade);
+        Assertions.assertEquals(atividade.getStatus(), verificaRetornoDaAtividade.getStatus());
+        Assertions.assertEquals(atividade.getTarefa(), verificaRetornoDaAtividade.getTarefa());
+        Assertions.assertEquals(atividade.getCategoria(), verificaRetornoDaAtividade.getCategoria());
+        Assertions.assertEquals(atividade.getId(), verificaRetornoDaAtividade.getId());
+
+
+    }
 }
