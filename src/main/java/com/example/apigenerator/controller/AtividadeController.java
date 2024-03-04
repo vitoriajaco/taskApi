@@ -24,12 +24,14 @@ public class AtividadeController {
     private AtividadeRepository atividadeRepository;
 
     @GetMapping(path = "/listarAtividades")
+    @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<List<Atividade>> mostrarTodasAtividades() {
         return ResponseEntity.ok(atividadeService.mostrarTodasAtividades());
 
     }
 
     @GetMapping(path = "/buscarPorId/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
     public ResponseEntity<Optional<Atividade>> buscarAtividadePorId(@PathVariable Long id) {
         return ResponseEntity.ok(atividadeService.buscarAtividadePorId(id));
 
@@ -38,7 +40,8 @@ public class AtividadeController {
     @PostMapping(path = "/cadastrarAtividade")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Atividade> cadastrarAtividade(@RequestBody Atividade atividade) {
-        return ResponseEntity.ok(atividadeService.cadastrarAtividade(atividade));
+       Atividade create = atividadeService.cadastrarAtividade(atividade);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping(path = "/alterarAtividade/{id}")
@@ -56,10 +59,10 @@ public class AtividadeController {
     }
 
     @DeleteMapping(path = "/DeletarAtividade/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> deletarAtividade(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Atividade> deletarAtividade(@PathVariable Long id) {
         atividadeService.deletarAtividade(id);
-        return ResponseEntity.ok(true);
+        return (ResponseEntity<Atividade>) ResponseEntity.noContent();
     }
 
 
