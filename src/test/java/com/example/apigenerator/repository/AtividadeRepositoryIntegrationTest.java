@@ -53,4 +53,27 @@ public class AtividadeRepositoryIntegrationTest {
 
 
     }
+
+    @Test
+    public void deveAtualizarAtividade(){
+
+        Atividade atividade = new Atividade(1L, "Estudar testes unitarios", Status.CONCLUIDA, Categoria.PESSOAL);
+
+        atividade.setTarefa("Estudar CloudWatch");
+        atividade.setStatus(Status.EXECUTANDO);
+
+        Atividade salvarAtividade = atividadeRepository.save(atividade);
+
+        Atividade verificaRetorno = atividadeRepository.findById(atividade.getId()).orElse(null);
+
+        Assertions.assertNotNull(verificaRetorno);
+        Assertions.assertEquals(atividade.getTarefa(), salvarAtividade.getTarefa());
+        Assertions.assertEquals(atividade.getId(), salvarAtividade.getId());
+        Assertions.assertEquals(atividade.getCategoria(), salvarAtividade.getCategoria());
+        Assertions.assertEquals(atividade.getStatus(), verificaRetorno.getStatus());
+
+
+
+
+    }
 }
