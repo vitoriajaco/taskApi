@@ -51,7 +51,7 @@ class AtividadeServiceTest {
 
 
     private void iniciarAtividade(){
-        atividade = new Atividade(ID,tarefa, status, categoria);
+        atividade = new Atividade(tarefa, status, categoria);
     }
 
 
@@ -65,8 +65,8 @@ class AtividadeServiceTest {
     @Test
     void deveMostrarTodasAtividades() {
         List<Atividade>listaDeAtividades = new ArrayList<>();
-        Atividade atividade2 = new Atividade(2L, "Correr uma maratona", Status.EM_ABERTO, Categoria.PESSOAL);
-        Atividade atividade3 = new Atividade(3L, "Comprar batata doce", Status.CONCLUIDA, Categoria.MERCADO);
+        Atividade atividade2 = new Atividade( "Correr uma maratona", Status.EM_ABERTO, Categoria.PESSOAL);
+        Atividade atividade3 = new Atividade( "Comprar batata doce", Status.CONCLUIDA, Categoria.MERCADO);
         listaDeAtividades.add(atividade);
         listaDeAtividades.add(atividade2);
         listaDeAtividades.add(atividade3);

@@ -3,19 +3,29 @@ package com.example.apigenerator.repository;
 
 import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
+import com.example.apigenerator.controller.AtividadeController;
 import com.example.apigenerator.model.Atividade;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Optional;
 
 @DataJpaTest
+
 public class AtividadeRepositoryIntegrationTest {
 
     @Autowired
     private AtividadeRepository atividadeRepository;
 
+
     @Test
+    @Transactional //garante que as alterações sejam revertidas após cada teste
     public void deveRetornarObjetoSalvo(){
 
         Atividade atividade = new Atividade();
@@ -36,6 +46,7 @@ public class AtividadeRepositoryIntegrationTest {
 
     }
     @Test
+    @Transactional
     public void deveCadastrarAtividadeSemStatusECategoriaERetornarValoresDefault(){
 
         Atividade atividade = new Atividade();
@@ -55,9 +66,10 @@ public class AtividadeRepositoryIntegrationTest {
     }
 
     @Test
+    @Transactional
     public void deveAtualizarAtividade(){
 
-        Atividade atividade = new Atividade(1L, "Estudar testes unitarios", Status.CONCLUIDA, Categoria.PESSOAL);
+        Atividade atividade = new Atividade( "Estudar testes unitarios", Status.CONCLUIDA, Categoria.PESSOAL);
 
         atividade.setTarefa("Estudar CloudWatch");
         atividade.setStatus(Status.EXECUTANDO);
@@ -71,6 +83,29 @@ public class AtividadeRepositoryIntegrationTest {
         Assertions.assertEquals(atividade.getId(), salvarAtividade.getId());
         Assertions.assertEquals(atividade.getCategoria(), salvarAtividade.getCategoria());
         Assertions.assertEquals(atividade.getStatus(), verificaRetorno.getStatus());
+
+    }
+    @Test
+    public void deveDeletarAtividade(){
+
+
+        AtividadeController atividadeController = new AtividadeController();
+
+        Atividade atividade = new Atividade( "Estudar testes unitarios", Status.CONCLUIDA, Categoria.PESSOAL);
+
+        Atividade salvarAtividade = atividadeRepository.save(atividade);
+
+
+        Optional<Atividade> apagarAtividade = atividadeRepository.findById(atividade.getId());
+
+        atividadeController.deletarAtividade(apagarAtividade.get().getId());
+
+
+
+
+
+
+
 
 
 

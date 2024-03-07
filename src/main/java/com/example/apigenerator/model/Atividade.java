@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @Entity
-@AllArgsConstructor
+
 @NoArgsConstructor
 public class Atividade {
     @Id
@@ -27,11 +27,43 @@ public class Atividade {
     @Column(name = "categoria")
     private Categoria categoria = Categoria.SEM_CATEGORIA;
 
+    public Atividade(String tarefa, Status status, Categoria categoria) {
+        this.tarefa = tarefa;
+        this.status = status;
+        this.categoria = categoria;
+    }
+
+
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTarefa() {
+        return tarefa;
+    }
+
+    public void setTarefa(String tarefa) {
+        this.tarefa = tarefa;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

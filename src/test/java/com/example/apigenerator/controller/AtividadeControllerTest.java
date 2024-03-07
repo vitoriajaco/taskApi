@@ -137,6 +137,6 @@ class AtividadeControllerTest {
     }
 
     public void iniciarAtividade(){
-        atividade = new Atividade(ID,tarefa, status, categoria);
+        atividade = new Atividade(tarefa, status, categoria);
     }
 }
