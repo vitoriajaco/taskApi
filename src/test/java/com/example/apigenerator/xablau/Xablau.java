@@ -29,16 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class Xablau {
 
-
-
-
         @Autowired
         private MockMvc mockMvc;
         @Autowired
         private AtividadeRepository atividadeRepository;
         @Autowired
         private ObjectMapper objectMapper;
-
 
 
         @Test
@@ -49,7 +45,7 @@ public class Xablau {
                 String atividadeMapper = objectMapper.writeValueAsString(atividade);
 
                 var result = mockMvc.perform(MockMvcRequestBuilders.post("/api/task/cadastrarAtividade")
-                        .content(atividadeMapper).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                                .content(atividadeMapper).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                         .andExpect(jsonPath("$.tarefa").value("Correr")).
                         andExpect(jsonPath("$.status").value("EXECUTANDO"))
                         .andExpect(jsonPath("$.categoria").value("TRABALHO"))
@@ -72,28 +68,41 @@ public class Xablau {
                         .andExpect(jsonPath("$.id").value(1L));
 
         }
-
         @Test
         @DisplayName("Deve alterar atividade")
-        void DeveAlterarAtividade() throws Exception {
+        void deveAlterarAtividade() throws Exception {
                 Atividade atividade = new Atividade("Correr", Status.EXECUTANDO, Categoria.PESSOAL);
                 atividade.getId();
                 atividade.setTarefa("Caminhar");
                 atividade.setStatus(Status.CONCLUIDA);
                 atividade.setCategoria(Categoria.URGENTE);
 
-
-                atividadeRepository.save(atividade);
+               atividadeRepository.save(atividade);
 
                 String atividadeMapper = objectMapper.writeValueAsString(atividade);
 
                 var result = mockMvc.perform(MockMvcRequestBuilders.put("/api/task/alterarAtividade/{id}", atividade.getId())
                                 .content(atividadeMapper).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                         .andExpect(jsonPath("$.id").value(1L))
-                       .andExpect(jsonPath("$.tarefa").value("Caminhar")).
+                        .andExpect(jsonPath("$.tarefa").value("Caminhar")).
                         andExpect(jsonPath("$.status").value("CONCLUIDA"))
                         .andExpect(jsonPath("$.categoria").value("URGENTE"));
 
         }
+        @Test
+        @DisplayName("Deve deletar atividade")
+        void deveDeletarAtividade() throws Exception {
+                Atividade atividade = new Atividade("Correr", Status.EXECUTANDO, Categoria.PESSOAL);
 
-    }
+                String atividadeMapper = objectMapper.writeValueAsString(atividade);
+
+                atividadeRepository.save(atividade);
+
+                var result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/task/DeletarAtividade/{id}", atividade.getId())
+                        .content(atividadeMapper).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+
+        }
+
+
+        }
