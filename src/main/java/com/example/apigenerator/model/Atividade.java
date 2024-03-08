@@ -32,6 +32,10 @@ public class Atividade {
         this.status = status;
         this.categoria = categoria;
     }
+    public Atividade(String tarefa) {
+        this.tarefa = tarefa;
+
+    }
 
 
 

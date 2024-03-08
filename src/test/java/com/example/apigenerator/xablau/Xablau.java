@@ -6,6 +6,7 @@ import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class Xablau {
 
 
         @Test
+        @DisplayName("Deve cadastrar atividade passando todos os parametros")
         void deveCadastrarAtividade() throws Exception {
                 Atividade atividade = new Atividade("Correr", Status.EXECUTANDO, Categoria.TRABALHO);
 
@@ -51,10 +53,21 @@ public class Xablau {
                         .andExpect(MockMvcResultMatchers.jsonPath("$.categoria").value("TRABALHO"))
                         .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L));
 
+        }
 
+        @Test
+        @DisplayName("Deve cadastrar atividade somente com tarefa e retornar os valores default")
+        void deveCadastrarAtividadeTest2() throws Exception {
+                Atividade atividade = new Atividade("Caminhar");
 
+                String atividadeMapper = objectMapper.writeValueAsString(atividade);
 
-
+                var result = mockMvc.perform(MockMvcRequestBuilders.post("/api/task/cadastrarAtividade")
+                                .content(atividadeMapper).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.tarefa").value("Caminhar")).
+                        andExpect(MockMvcResultMatchers.jsonPath("$.status").value("EM_ABERTO"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.categoria").value("SEM_CATEGORIA"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L));
 
         }
 
