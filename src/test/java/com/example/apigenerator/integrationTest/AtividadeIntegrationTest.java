@@ -1,4 +1,4 @@
-package com.example.apigenerator.xablau;
+package com.example.apigenerator.integrationTest;
 
 import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
@@ -6,7 +6,6 @@ import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.servlet.ServletContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,9 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -27,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class Xablau {
+public class AtividadeIntegrationTest {
 
         @Autowired
         private MockMvc mockMvc;
