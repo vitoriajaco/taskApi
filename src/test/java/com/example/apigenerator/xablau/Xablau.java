@@ -71,4 +71,22 @@ public class Xablau {
 
         }
 
+        @Test
+        @DisplayName("Deve alterar atividade")
+        void DeveAlterarAtividade() throws Exception {
+                Atividade atividade = new Atividade("Caminhar 5K", Status.EXECUTANDO, Categoria.PESSOAL);
+
+                atividade.setTarefa("Caminhar");
+
+                String atividadeMapper = objectMapper.writeValueAsString(atividade);
+
+                var result = mockMvc.perform(MockMvcRequestBuilders.post("/api/task/cadastrarAtividade")
+                                .content(atividadeMapper).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.tarefa").value("Caminhar")).
+                        andExpect(MockMvcResultMatchers.jsonPath("$.status").value("EXECUTANDO"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.categoria").value("PESSOAL"))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L));
+
+        }
+
     }
