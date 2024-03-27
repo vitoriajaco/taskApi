@@ -1,5 +1,6 @@
 package com.example.apigenerator.controller;
 
+import com.example.apigenerator.service.exception.AtividadeNotFoundException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
 import com.example.apigenerator.service.AtividadeService;
@@ -24,7 +25,7 @@ public class AtividadeController {
     private AtividadeRepository atividadeRepository;
 
     @GetMapping(path = "/listarAtividades")
-    public ResponseEntity<List<Atividade>> mostrarTodasAtividades() {
+    public ResponseEntity<List<Atividade>> mostrarTodasAtividades() throws AtividadeNotFoundException {
         return ResponseEntity.ok(atividadeService.mostrarTodasAtividades());
 
     }
@@ -43,7 +44,7 @@ public class AtividadeController {
 
     @PutMapping(path = "/alterarAtividade/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) {
+    public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) throws AtividadeNotFoundException {
         Atividade result = atividadeService.alterarAtividade(atividade, id);
         return ResponseEntity.ok(result);
     }
