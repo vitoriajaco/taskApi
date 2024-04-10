@@ -9,13 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
 public class AtividadeController {
 
     @Autowired
@@ -24,44 +26,47 @@ public class AtividadeController {
     @Autowired
     private AtividadeRepository atividadeRepository;
 
-    @GetMapping(path = "/task")
+    @GetMapping(value = "/task")
     public ResponseEntity<List<Atividade>> mostrarTodasAtividades() throws AtividadeNotFoundException {
        List<Atividade> listAtividade = atividadeService.mostrarTodasAtividades();
         return ResponseEntity.ok().body(listAtividade);
 
     }
 
-    @GetMapping(path = "/task/{id}")
+    @GetMapping(value = "/task/{id}")
     public ResponseEntity<Optional<Atividade>> buscarAtividadePorId(@PathVariable Long id) {
         return ResponseEntity.ok(atividadeService.buscarAtividadePorId(id));
 
     }
 
-    @PostMapping(path = "/task")
+    @PostMapping(value = "/task")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Atividade> cadastrarAtividade(@RequestBody Atividade atividade) {
-        return ResponseEntity.ok(atividadeService.cadastrarAtividade(atividade));
+        atividade = atividadeService.cadastrarAtividade(atividade);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(atividade.getId()).toUri();
+        return ResponseEntity.created(uri).body(atividade);
     }
 
-    @PutMapping(path = "/task/{id}")
+    @PutMapping(value = "/task/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) throws AtividadeNotFoundException {
         Atividade result = atividadeService.alterarAtividade(atividade, id);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping(path = "/task/{id}")
+    @PutMapping(value = "/task/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> updateTask(@PathVariable Long id, @RequestBody Atividade atividade){
         Atividade resultado = atividadeService.update(atividade, id).getBody();
         return ResponseEntity.ok(resultado);
     }
 
-    @DeleteMapping(path = "/task/{id}")
+    @DeleteMapping(value = "/task/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> deletarAtividade(@PathVariable Long id) {
+    public ResponseEntity<Void> deletarAtividade(@PathVariable Long id) {
         atividadeService.deletarAtividade(id);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.noContent().build();
     }
 
 
