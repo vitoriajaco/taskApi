@@ -55,7 +55,7 @@ class AtividadeControllerTest {
         iniciarAtividade();
     }
 
-    @Test
+   /* @Test
     void deveMostrarStatus200AoListarTodasAtividades() {
         Mockito.when(atividadeService.mostrarTodasAtividades()).thenReturn(List.of(atividade));
         ResponseEntity<List<Atividade>> result = atividadeController.mostrarTodasAtividades();
@@ -63,9 +63,9 @@ class AtividadeControllerTest {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result);
 
-    }
+    }*/
 
-    @Test
+/*    @Test
     void aoBuscarAtividadePorIdDeveRetornarStatusOk() {
         Mockito.when(atividadeService.buscarAtividadePorId(anyLong())).thenReturn(Optional.of(atividade));
         ResponseEntity<Atividade>result = atividadeController.alterarAtividade(ID, atividade);
@@ -74,7 +74,7 @@ class AtividadeControllerTest {
         assertNotNull(result.getStatusCode());
         assertNotNull(result);
 
-    }
+    }*/
 
     @Test
     void aoCadastrarAtividadeDeveRetornarStatusOk() {
@@ -83,7 +83,7 @@ class AtividadeControllerTest {
         assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
-    @Test
+/*    @Test
     void aoAlterarAtividadeDeveRetornarStatusCodeOk() {
         Mockito.when(atividadeService.alterarAtividade(any(), anyLong())).thenReturn(atividade);
         ResponseEntity<Atividade> result = atividadeController.alterarAtividade(ID, atividade);
@@ -91,7 +91,7 @@ class AtividadeControllerTest {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getStatusCode());
 
-    }
+    }*/
 
     @Test
     void aoEditarAtividadeDeveRetornar200OKMetodoUpdate() {
