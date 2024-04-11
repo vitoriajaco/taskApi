@@ -35,7 +35,8 @@ public class AtividadeController {
 
     @GetMapping(value = "/task/{id}")
     public ResponseEntity<Optional<Atividade>> buscarAtividadePorId(@PathVariable Long id) {
-        return ResponseEntity.ok(atividadeService.buscarAtividadePorId(id));
+        Optional<Atividade> atividade = atividadeService.buscarAtividadePorId(id);
+        return ResponseEntity.ok().body(atividade);
 
     }
 
@@ -59,11 +60,11 @@ public class AtividadeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> updateTask(@PathVariable Long id, @RequestBody Atividade atividade){
         Atividade resultado = atividadeService.update(atividade, id).getBody();
-        return ResponseEntity.ok(resultado);
+        return ResponseEntity.ok().body(resultado);
     }
 
     @DeleteMapping(value = "/task/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deletarAtividade(@PathVariable Long id) {
         atividadeService.deletarAtividade(id);
         return ResponseEntity.noContent().build();
