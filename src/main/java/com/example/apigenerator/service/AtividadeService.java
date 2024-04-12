@@ -54,6 +54,7 @@ public class AtividadeService {
                 .map(atividadeToUpdate -> {
                     atividadeToUpdate.setTarefa(atividade.getTarefa());
                     atividadeToUpdate.setStatus(atividade.getStatus());
+                    atividadeToUpdate.setCategoria(atividade.getCategoria());
                     Atividade updated = atividadeRepository.save(atividadeToUpdate);
                     return ResponseEntity.ok().body(updated);
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
