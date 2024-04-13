@@ -24,7 +24,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     private ResponseEntity<String> atividadeNaoCadastradaHandler(ResourceNotFoundException exception){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não há nenhuma atividade cadastrada");
+        return ResponseEntity.status(HttpStatus.OK).body("Não há nenhuma atividade cadastrada");
     }
 
 
