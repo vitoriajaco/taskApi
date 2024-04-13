@@ -35,6 +35,7 @@ public class AtividadeService {
     }
 
     public Optional<Atividade> buscarAtividadePorId(Long id) {
+            validadeSeAtividadeExiste(id);
         return atividadeRepository.findById(id);
     }
 
