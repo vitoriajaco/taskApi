@@ -53,7 +53,7 @@ public class AtividadeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) throws AtividadeNotFoundException {
         Atividade result = atividadeService.alterarAtividade(atividade, id);
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping(value = "/task/{id}")
