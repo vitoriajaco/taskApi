@@ -2,7 +2,6 @@ package com.example.apigenerator.controller;
 
 import com.example.apigenerator.service.exception.AtividadeNotFoundException;
 import com.example.apigenerator.model.Atividade;
-import com.example.apigenerator.repository.AtividadeRepository;
 import com.example.apigenerator.service.AtividadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,33 +13,33 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/tasks")
 public class AtividadeController {
 
     @Autowired
     AtividadeService atividadeService;
 
-    @Autowired
-    private AtividadeRepository atividadeRepository;
+   //não tem necessidade de instanciar o repository aqui
 
-    @GetMapping(value = "/task")
+    @GetMapping
     public ResponseEntity<List<Atividade>> mostrarTodasAtividades() throws AtividadeNotFoundException {
        List<Atividade> listAtividade = atividadeService.mostrarTodasAtividades();
         return ResponseEntity.ok().body(listAtividade);
 
     }
-
-    @GetMapping(value = "/task/{id}")
-    public ResponseEntity<Optional<Atividade>> buscarAtividadePorId(@PathVariable Long id) {
-        Optional<Atividade> atividade = atividadeService.buscarAtividadePorId(id);
+        //Melhoria: atividade deixa de ser um optional e passa a ter um tratamento de erro direto
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Atividade> buscarAtividadePorId(@PathVariable Long id) {
+       Atividade atividade = atividadeService.buscarAtividadePorId(id)
+                .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada"));
         return ResponseEntity.ok().body(atividade);
 
     }
-
-    @PostMapping(value = "/task")
+    //sai a repetição de código de (value: "/tasks" onde nao tem necessidade)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Atividade> cadastrarAtividade(@RequestBody Atividade atividade) {
         atividade = atividadeService.cadastrarAtividade(atividade);
@@ -49,26 +48,25 @@ public class AtividadeController {
         return ResponseEntity.created(uri).body(atividade);
     }
 
-    @PutMapping(value = "/tasks/{id}")
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) throws AtividadeNotFoundException {
+    public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) {
         Atividade result = atividadeService.alterarAtividade(atividade, id);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping(value = "/task/{id}")
+    @PatchMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Atividade> updateTask(@PathVariable Long id, @RequestBody Atividade atividade){
+    public ResponseEntity<Atividade> atualizarAtividade(@PathVariable Long id, @RequestBody Atividade atividade){
         Atividade resultado = atividadeService.update(atividade, id).getBody();
         return ResponseEntity.ok().body(resultado);
     }
 
-    @DeleteMapping(value = "/task/{id}")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deletarAtividade(@PathVariable Long id) {
         atividadeService.deletarAtividade(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }
