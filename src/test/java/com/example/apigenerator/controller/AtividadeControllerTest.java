@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,7 +106,7 @@ class AtividadeControllerTest {
       Mockito.when(atividadeRepository.save(atividade)).thenReturn(atividade);
 
 
-      ResponseEntity<Atividade> result = atividadeController.updateTask(ID, atividade);
+      ResponseEntity<Atividade> result = atividadeController.atualizarAtividade(ID, atividade);
 
 
       Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -130,7 +129,7 @@ class AtividadeControllerTest {
     @Test
     void buscarPorIdRetornandoStatusOK() {
         Mockito.when(atividadeService.buscarAtividadePorId(anyLong())).thenReturn(Optional.of(atividade));
-        ResponseEntity<Optional<Atividade>> result = atividadeController.buscarAtividadePorId(ID);
+        ResponseEntity<Atividade> result = atividadeController.buscarAtividadePorId(ID);
 
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
