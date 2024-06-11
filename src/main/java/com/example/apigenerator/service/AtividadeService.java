@@ -1,6 +1,8 @@
 package com.example.apigenerator.service;
 
 
+import com.example.apigenerator.Enum.Categoria;
+import com.example.apigenerator.Enum.Status;
 import com.example.apigenerator.service.exception.AtividadeNotFoundException;
 import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
@@ -47,7 +49,7 @@ public class AtividadeService {
         return atividadeRepository.save(atividade);
     }
 
-    public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
+ /*   public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
         return atividadeRepository.findById(id)
                 .map(atividadeToUpdate -> {
                     atividadeToUpdate.setTarefa(atividade.getTarefa());
@@ -56,6 +58,28 @@ public class AtividadeService {
                     Atividade updated = atividadeRepository.save(atividadeToUpdate);
                     return ResponseEntity.ok().body(updated);
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
+    }*/
+
+    public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
+        return atividadeRepository.findById(id)
+                .map(atividadeToUpdate -> {
+
+                    if (atividade.getTarefa() != null) {
+                        atividadeToUpdate.setTarefa(atividade.getTarefa());
+                    }
+
+                    if (atividade.getStatus() != Status.EM_ABERTO) {
+                        atividadeToUpdate.setStatus(atividade.getStatus());
+                    }
+
+
+                    if (atividade.getCategoria() != Categoria.SEM_CATEGORIA) {
+                        atividadeToUpdate.setCategoria(atividade.getCategoria());
+                    }
+
+                    Atividade updated = atividadeRepository.save(atividadeToUpdate);
+                    return ResponseEntity.ok().body(updated);
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
     }
     public void deletarAtividade(Long id){
         validarSeAtividadeExiste(id);
