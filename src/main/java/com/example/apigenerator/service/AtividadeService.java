@@ -25,17 +25,14 @@ public class AtividadeService {
 
     public List<Atividade> mostrarTodasAtividades()   {
         List<Atividade> atividades = atividadeRepository.findAll();
-
         if (atividades.isEmpty()){
             throw new ResourceNotFoundException("Ainda não há atividades cadastradas!");
         }
-
-
         return atividades;
     }
 
     public Optional<Atividade> buscarAtividadePorId(Long id) {
-            validadeSeAtividadeExiste(id);
+            validarSeAtividadeExiste(id);
         return atividadeRepository.findById(id);
     }
 
@@ -43,10 +40,10 @@ public class AtividadeService {
         return atividadeRepository.save(atividade);
     }
     public Atividade alterarAtividade(Atividade atividade, Long id)  {
-        if (!(atividade.getId() == id)) {
+        if (!(atividade.getId().equals(id))) { // aqui tinha um == id -> substitui por equals
             throw new AtividadeSameIdException("ID de atividades não são iguais");
         }
-        validadeSeAtividadeExiste(id);
+        validarSeAtividadeExiste(id);
         return atividadeRepository.save(atividade);
     }
 
@@ -61,12 +58,19 @@ public class AtividadeService {
                 }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
     }
     public void deletarAtividade(Long id){
+        validarSeAtividadeExiste(id);
         atividadeRepository.deleteById(id);
     }
-    public Atividade validadeSeAtividadeExiste(Long id)  {
+  /*  public Atividade validarSeAtividadeExiste(Long id)  {
         Optional <Atividade> isPresent = atividadeRepository.findById(id);
         return isPresent.orElseThrow(() -> new AtividadeNotFoundException( "Atividade não encontrada!"));
 
-        }
+        }*/
 
+    public void validarSeAtividadeExiste(Long id) {
+        if (!atividadeRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Atividade com id" + id + "não encontrada");
+
+        }
+    }
 }
