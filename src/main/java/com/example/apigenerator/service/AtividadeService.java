@@ -48,6 +48,7 @@ public class AtividadeService {
         validarSeAtividadeExiste(id);
         return atividadeRepository.save(atividade);
     }
+ // DESSA FORMA NAO FUNCIONAVA AO ATUALIZAR SOMENTE UM CAMPO
 
  /*   public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
         return atividadeRepository.findById(id)
