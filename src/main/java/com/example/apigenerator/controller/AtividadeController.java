@@ -1,5 +1,6 @@
 package com.example.apigenerator.controller;
 
+import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.service.exception.AtividadeNotFoundException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.service.AtividadeService;
@@ -37,6 +38,12 @@ public class AtividadeController {
                 .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada"));
         return ResponseEntity.ok().body(atividade);
 
+    }
+
+    @GetMapping ("/categoria/{categoria}")
+    public List<Atividade> buscarporCategoria (@PathVariable Categoria categoria){
+        List<Atividade> atividade = atividadeService.buscarPorCategoria(categoria);
+        return atividade;
     }
     //sai a repetição de código de (value: "/tasks" onde nao tem necessidade)
     @PostMapping
