@@ -3,7 +3,6 @@ package com.example.apigenerator.service;
 
 import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
-import com.example.apigenerator.service.exception.AtividadeNotFoundException;
 import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
@@ -36,6 +35,10 @@ public class AtividadeService {
     public Optional<Atividade> buscarAtividadePorId(Long id) {
             validarSeAtividadeExiste(id);
         return atividadeRepository.findById(id);
+    }
+
+    public List<Atividade> buscarPorCategoria(Categoria categoria){
+        return atividadeRepository.findByCategoria(categoria);
     }
 
     public Atividade cadastrarAtividade(Atividade atividade) {
