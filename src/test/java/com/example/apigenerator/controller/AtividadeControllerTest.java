@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +25,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 
 @SpringBootTest
 class AtividadeControllerTest {
+
 
 //    public static final Long ID = 1L;
 //
@@ -139,4 +139,5 @@ class AtividadeControllerTest {
 //    public void iniciarAtividade(){
 //        atividade = new Atividade(tarefa, status, categoria);
 //    }
+
 }

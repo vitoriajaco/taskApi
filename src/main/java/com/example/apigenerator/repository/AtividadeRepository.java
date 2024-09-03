@@ -10,7 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface AtividadeRepository extends JpaRepository<Atividade, Long> {
+
     List<Atividade> findByCategoria (Categoria categoria);
+
 
 }
 

@@ -1,9 +1,10 @@
 package com.example.apigenerator.controller;
 
 import com.example.apigenerator.Enum.Categoria;
+
 import com.example.apigenerator.exception.AtividadeNotFoundException;
+
 import com.example.apigenerator.model.Atividade;
-import com.example.apigenerator.repository.AtividadeRepository;
 import com.example.apigenerator.service.AtividadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping(value = "/api/tasks")
@@ -36,6 +37,7 @@ public class AtividadeController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Atividade> buscarAtividadePorId(@PathVariable Long id) {
         Atividade atividade = atividadeService.buscarAtividadePorId(id)
+
                 .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada"));
         return ResponseEntity.ok().body(atividade);
 
@@ -66,7 +68,9 @@ public class AtividadeController {
     @PatchMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> atualizarAtividade(@PathVariable Long id, @RequestBody Atividade atividade){
+
         Atividade resultado = atividadeService.atualizarAtividade(atividade, id).getBody();
+
         return ResponseEntity.ok().body(resultado);
     }
 
