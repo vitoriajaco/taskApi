@@ -1,7 +1,9 @@
 package com.example.apigenerator.controller;
 
 import com.example.apigenerator.Enum.Categoria;
-import com.example.apigenerator.service.exception.AtividadeNotFoundException;
+
+import com.example.apigenerator.exception.AtividadeNotFoundException;
+
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.service.AtividadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +25,19 @@ public class AtividadeController {
     @Autowired
     AtividadeService atividadeService;
 
-   //não tem necessidade de instanciar o repository aqui
+    //não tem necessidade de instanciar o repository aqui
 
     @GetMapping
     public ResponseEntity<List<Atividade>> mostrarTodasAtividades() throws AtividadeNotFoundException {
-       List<Atividade> listAtividade = atividadeService.mostrarTodasAtividades();
+        List<Atividade> listAtividade = atividadeService.mostrarTodasAtividades();
         return ResponseEntity.ok().body(listAtividade);
 
     }
-        //Melhoria: atividade deixa de ser um optional e passa a ter um tratamento de erro direto
+    //Melhoria: atividade deixa de ser um optional e passa a ter um tratamento de erro direto
     @GetMapping(value = "/{id}")
     public ResponseEntity<Atividade> buscarAtividadePorId(@PathVariable Long id) {
-       Atividade atividade = atividadeService.buscarAtividadePorId(id)
+        Atividade atividade = atividadeService.buscarAtividadePorId(id)
+
                 .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada"));
         return ResponseEntity.ok().body(atividade);
 
@@ -65,7 +68,9 @@ public class AtividadeController {
     @PatchMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> atualizarAtividade(@PathVariable Long id, @RequestBody Atividade atividade){
-        Atividade resultado = atividadeService.update(atividade, id).getBody();
+
+        Atividade resultado = atividadeService.atualizarAtividade(atividade, id).getBody();
+
         return ResponseEntity.ok().body(resultado);
     }
 

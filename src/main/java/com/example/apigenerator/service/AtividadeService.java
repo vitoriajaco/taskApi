@@ -3,6 +3,7 @@ package com.example.apigenerator.service;
 
 import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
+
 import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
@@ -33,6 +34,7 @@ public class AtividadeService {
     }
 
     public Optional<Atividade> buscarAtividadePorId(Long id) {
+
             validarSeAtividadeExiste(id);
         return atividadeRepository.findById(id);
     }
@@ -51,20 +53,9 @@ public class AtividadeService {
         validarSeAtividadeExiste(id);
         return atividadeRepository.save(atividade);
     }
- // DESSA FORMA NAO FUNCIONAVA AO ATUALIZAR SOMENTE UM CAMPO
 
- /*   public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
-        return atividadeRepository.findById(id)
-                .map(atividadeToUpdate -> {
-                    atividadeToUpdate.setTarefa(atividade.getTarefa());
-                    atividadeToUpdate.setStatus(atividade.getStatus());
-                    atividadeToUpdate.setCategoria(atividade.getCategoria());
-                    Atividade updated = atividadeRepository.save(atividadeToUpdate);
-                    return ResponseEntity.ok().body(updated);
-                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
-    }*/
 
-    public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
+    public ResponseEntity<Atividade> atualizarAtividade(Atividade atividade, Long id) {
         return atividadeRepository.findById(id)
                 .map(atividadeToUpdate -> {
 
@@ -83,17 +74,11 @@ public class AtividadeService {
 
                     Atividade updated = atividadeRepository.save(atividadeToUpdate);
                     return ResponseEntity.ok().body(updated);
-                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
-    }
+
     public void deletarAtividade(Long id){
         validarSeAtividadeExiste(id);
         atividadeRepository.deleteById(id);
     }
-  /*  public Atividade validarSeAtividadeExiste(Long id)  {
-        Optional <Atividade> isPresent = atividadeRepository.findById(id);
-        return isPresent.orElseThrow(() -> new AtividadeNotFoundException( "Atividade não encontrada!"));
-
-        }*/
 
     public void validarSeAtividadeExiste(Long id) {
         if (!atividadeRepository.existsById(id)) {
@@ -101,4 +86,6 @@ public class AtividadeService {
 
         }
     }
+
 }
+
