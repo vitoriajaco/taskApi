@@ -1,5 +1,7 @@
 package com.example.apigenerator.controller;
 
+import com.example.apigenerator.Enum.Categoria;
+import com.example.apigenerator.exception.AtividadeNotFoundException;
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.repository.AtividadeRepository;
 import com.example.apigenerator.service.AtividadeService;
@@ -8,59 +10,71 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping(value = "/api/tasks")
 public class AtividadeController {
 
     @Autowired
     AtividadeService atividadeService;
 
-    @Autowired
-    private AtividadeRepository atividadeRepository;
+    //não tem necessidade de instanciar o repository aqui
 
-    @GetMapping(path = "/listarAtividades")
-    public ResponseEntity<List<Atividade>> mostrarTodasAtividades() {
-        return ResponseEntity.ok(atividadeService.mostrarTodasAtividades());
+    @GetMapping
+    public ResponseEntity<List<Atividade>> mostrarTodasAtividades() throws AtividadeNotFoundException {
+        List<Atividade> listAtividade = atividadeService.mostrarTodasAtividades();
+        return ResponseEntity.ok().body(listAtividade);
+
+    }
+    //Melhoria: atividade deixa de ser um optional e passa a ter um tratamento de erro direto
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Atividade> buscarAtividadePorId(@PathVariable Long id) {
+        Atividade atividade = atividadeService.buscarAtividadePorId(id)
+                .orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada"));
+        return ResponseEntity.ok().body(atividade);
 
     }
 
-    @GetMapping(path = "/buscarPorId/{id}")
-    public ResponseEntity<Optional<Atividade>> buscarAtividadePorId(@PathVariable Long id) {
-        return ResponseEntity.ok(atividadeService.buscarAtividadePorId(id));
-
+    @GetMapping ("/categoria/{categoria}")
+    public List<Atividade> buscarporCategoria (@PathVariable Categoria categoria){
+        List<Atividade> atividade = atividadeService.buscarPorCategoria(categoria);
+        return atividade;
     }
-
-    @PostMapping(path = "/cadastrarAtividade")
+    //sai a repetição de código de (value: "/tasks" onde nao tem necessidade)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Atividade> cadastrarAtividade(@RequestBody Atividade atividade) {
-        return ResponseEntity.ok(atividadeService.cadastrarAtividade(atividade));
+        atividade = atividadeService.cadastrarAtividade(atividade);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(atividade.getId()).toUri();
+        return ResponseEntity.created(uri).body(atividade);
     }
 
-    @PutMapping(path = "/alterarAtividade/{id}")
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Atividade> alterarAtividade(@PathVariable Long id, @RequestBody Atividade atividade) {
         Atividade result = atividadeService.alterarAtividade(atividade, id);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping(path = "/updateAtividade/{id}")
+    @PatchMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Atividade> updateTask(@PathVariable Long id, @RequestBody Atividade atividade){
-        Atividade resultado = atividadeService.update(atividade, id).getBody();
-        return ResponseEntity.ok(resultado);
+    public ResponseEntity<Atividade> atualizarAtividade(@PathVariable Long id, @RequestBody Atividade atividade){
+        Atividade resultado = atividadeService.atualizarAtividade(atividade, id).getBody();
+        return ResponseEntity.ok().body(resultado);
     }
 
-    @DeleteMapping(path = "/DeletarAtividade/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> deletarAtividade(@PathVariable Long id) {
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> deletarAtividade(@PathVariable Long id) {
         atividadeService.deletarAtividade(id);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.noContent().build();
     }
-
 
 }

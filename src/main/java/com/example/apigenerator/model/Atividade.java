@@ -4,8 +4,7 @@ package com.example.apigenerator.model;
 import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
 import lombok.NoArgsConstructor;
 
 

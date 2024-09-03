@@ -1,6 +1,8 @@
 package com.example.apigenerator.service;
 
 
+import com.example.apigenerator.Enum.Categoria;
+import com.example.apigenerator.Enum.Status;
 import com.example.apigenerator.exception.AtividadeNotFoundException;
 import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
@@ -21,41 +23,64 @@ public class AtividadeService {
     private AtividadeRepository atividadeRepository;
 
 
-    public List<Atividade> mostrarTodasAtividades() {
-        return atividadeRepository.findAll();
+    public List<Atividade> mostrarTodasAtividades()   {
+        List<Atividade> atividades = atividadeRepository.findAll();
+        if (atividades.isEmpty()){
+            throw new ResourceNotFoundException("Ainda não há atividades cadastradas!");
+        }
+        return atividades;
     }
 
     public Optional<Atividade> buscarAtividadePorId(Long id) {
+        validarSeAtividadeExiste(id);
         return atividadeRepository.findById(id);
+    }
+
+    public List<Atividade> buscarPorCategoria(Categoria categoria){
+        return atividadeRepository.findByCategoria(categoria);
     }
 
     public Atividade cadastrarAtividade(Atividade atividade) {
         return atividadeRepository.save(atividade);
     }
-    public Atividade alterarAtividade(Atividade atividade, Long id) {
-        if (!(atividade.getId() == id)) {
+    public Atividade alterarAtividade(Atividade atividade, Long id)  {
+        if (!(atividade.getId().equals(id))) { // aqui tinha um == id -> substitui por equals
             throw new AtividadeSameIdException("ID de atividades não são iguais");
         }
-        validadeSeAtividadeExiste(id);
+        validarSeAtividadeExiste(id);
         return atividadeRepository.save(atividade);
     }
 
-    public ResponseEntity<Atividade> update(Atividade atividade, Long id) {
+    public ResponseEntity<Atividade> atualizarAtividade(Atividade atividade, Long id) {
         return atividadeRepository.findById(id)
                 .map(atividadeToUpdate -> {
-                    atividadeToUpdate.setTarefa(atividade.getTarefa());
-                    atividadeToUpdate.setStatus(atividade.getStatus());
+
+                    if (atividade.getTarefa() != null) {
+                        atividadeToUpdate.setTarefa(atividade.getTarefa());
+                    }
+
+                    if (atividade.getStatus() != Status.EM_ABERTO) {
+                        atividadeToUpdate.setStatus(atividade.getStatus());
+                    }
+
+
+                    if (atividade.getCategoria() != Categoria.SEM_CATEGORIA) {
+                        atividadeToUpdate.setCategoria(atividade.getCategoria());
+                    }
+
                     Atividade updated = atividadeRepository.save(atividadeToUpdate);
                     return ResponseEntity.ok().body(updated);
-                }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
     }
     public void deletarAtividade(Long id){
+        validarSeAtividadeExiste(id);
         atividadeRepository.deleteById(id);
     }
-    public Atividade validadeSeAtividadeExiste(Long id){
-        Optional <Atividade> isPresent = atividadeRepository.findById(id);
-        return isPresent.orElseThrow(() -> new AtividadeNotFoundException("Atividade não encontrada!"));
+
+    public void validarSeAtividadeExiste(Long id) {
+        if (!atividadeRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Atividade com id" + id + "não encontrada");
 
         }
-
+    }
 }
