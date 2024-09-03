@@ -34,8 +34,8 @@ public class AtividadeService {
     }
 
     public Optional<Atividade> buscarAtividadePorId(Long id) {
-
             validarSeAtividadeExiste(id);
+
         return atividadeRepository.findById(id);
     }
 
@@ -74,18 +74,17 @@ public class AtividadeService {
 
                     Atividade updated = atividadeRepository.save(atividadeToUpdate);
                     return ResponseEntity.ok().body(updated);
-
-    public void deletarAtividade(Long id){
-        validarSeAtividadeExiste(id);
-        atividadeRepository.deleteById(id);
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task não encontrada!"));
     }
 
-    public void validarSeAtividadeExiste(Long id) {
-        if (!atividadeRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Atividade com id" + id + "não encontrada");
+                    public void deletarAtividade(Long id){
+                        validarSeAtividadeExiste(id);
+                        atividadeRepository.deleteById(id);
+                    }
 
-        }
+                    public void validarSeAtividadeExiste(Long id){
+                        if (!atividadeRepository.existsById(id)) {
+                            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Atividade com id" + id + "não encontrada");
+                        }
     }
-
 }
-

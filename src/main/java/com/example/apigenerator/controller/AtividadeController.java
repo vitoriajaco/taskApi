@@ -2,10 +2,9 @@ package com.example.apigenerator.controller;
 
 import com.example.apigenerator.Enum.Categoria;
 
-import com.example.apigenerator.exception.AtividadeNotFoundException;
-
 import com.example.apigenerator.model.Atividade;
 import com.example.apigenerator.service.AtividadeService;
+import com.example.apigenerator.service.exception.AtividadeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
