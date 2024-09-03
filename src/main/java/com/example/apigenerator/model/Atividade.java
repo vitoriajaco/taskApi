@@ -10,13 +10,17 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-
+@AllArgsConstructor
 @NoArgsConstructor
 public class Atividade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "nomeUsuario")
+    private UserModel nomeUsuario;
 
     @Column(name = "tarefa", nullable = false, unique = true)
     private String tarefa;
@@ -37,7 +41,13 @@ public class Atividade {
 
     }
 
+    public UserModel getNomeUsuario() {
+        return nomeUsuario;
+    }
 
+    public void setNomeUsuario(UserModel nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
+    }
 
     public Long getId() {
         return id;

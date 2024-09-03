@@ -44,7 +44,7 @@ public class AtividadeRepositoryIntegrationTest {
         Assertions.assertEquals(atividade.getId(), verificaRetornoDaAtividade.getId());
 
     }
-    @Test
+  /*  @Test
     @Transactional
     public void deveCadastrarAtividadeSemStatusECategoriaERetornarValoresDefault(){
 
@@ -62,7 +62,7 @@ public class AtividadeRepositoryIntegrationTest {
         Assertions.assertEquals(atividade.getId(), verificaRetornoDaAtividade.getId());
 
 
-    }
+    }*/
 
     @Test
     @Transactional

@@ -27,7 +27,8 @@ public class AtividadeController {
 
     @GetMapping
     public ResponseEntity<List<Atividade>> mostrarTodasAtividades() throws AtividadeNotFoundException {
-       List<Atividade> listAtividade = atividadeService.mostrarTodasAtividades();
+
+        List<Atividade> listAtividade = atividadeService.mostrarTodasAtividades();
         return ResponseEntity.ok().body(listAtividade);
 
     }

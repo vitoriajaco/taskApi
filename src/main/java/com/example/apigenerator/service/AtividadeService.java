@@ -5,8 +5,10 @@ import com.example.apigenerator.Enum.Categoria;
 import com.example.apigenerator.Enum.Status;
 import com.example.apigenerator.exception.AtividadeSameIdException;
 import com.example.apigenerator.model.Atividade;
+import com.example.apigenerator.model.UserModel;
 import com.example.apigenerator.repository.AtividadeRepository;
 
+import com.example.apigenerator.repository.IUserRepository;
 import com.example.apigenerator.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +25,17 @@ public class AtividadeService {
     @Autowired
     private AtividadeRepository atividadeRepository;
 
+    @Autowired
+    private IUserRepository userRepository;
 
-    public List<Atividade> mostrarTodasAtividades()   {
+
+    public List<Atividade> mostrarTodasAtividades(Long userId)   {
+
+        UserModel user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado"));
+
+
         List<Atividade> atividades = atividadeRepository.findAll();
+
         if (atividades.isEmpty()){
             throw new ResourceNotFoundException("Ainda não há atividades cadastradas!");
         }
